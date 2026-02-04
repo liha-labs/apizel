@@ -1,0 +1,65 @@
+.exampleBlock {
+  margin-bottom: 8rem;
+}
+
+.exampleHeader {
+  margin-bottom: 2rem;
+}
+
+.titleArea {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.exampleTitle {
+  font-size: 1.8rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #000;
+}
+
+/* Chips UI */
+.chips {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.chips span {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  background: #f3f4f6;
+  color: #4b5563;
+  padding: 2px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+}
+
+.exampleDesc {
+  font-size: 1.1rem;
+  color: #374151;
+  line-height: 1.6;
+  max-width: 720px;
+}
+
+.note {
+  margin-top: 1.5rem;
+  font-size: 0.95rem;
+  color: var(--text-mute);
+  font-style: italic;
+  padding-left: 1rem;
+  border-left: 2px solid var(--border);
+}
+
+@media (max-width: 768px) {
+  .titleArea {
+    gap: 0.75rem;
+  }
+  .exampleTitle {
+    font-size: 1.5rem;
+  }
+}

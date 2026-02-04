@@ -1,0 +1,83 @@
+.section {
+  padding: 12rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.header {
+  margin-bottom: 6rem;
+  /* 番号をはみ出させるための左余白。
+     ここを広げることで、番号が外に出るスペースを確保しつつ
+     タイトルの「面」を固定します。 */
+  padding-left: 5rem;
+}
+
+.titleUnit {
+  position: relative; /* number の配置基準 */
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 1.5rem;
+}
+
+.number {
+  position: absolute;
+  /* タイトルの左端から外側（左）へ配置。
+     フォントサイズや文字数に合わせて調整してください。 */
+  left: -5rem;
+  bottom: 0.1em; /* タイトルのベースラインに合わせる */
+
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  font-weight: 500;
+  color: #a1a1a1;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+
+.title {
+  font-size: clamp(2.5rem, 6vw, 4.2rem);
+  font-weight: 900;
+  letter-spacing: -0.07em;
+  margin: 0;
+  line-height: 1;
+  color: #000;
+}
+
+.subTitle {
+  font-size: 1.3rem;
+  color: #4b5563;
+  max-width: 680px;
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+.body {
+  /* 見出しのテキスト面と揃えるために、header と同じ padding を設定 */
+  padding-left: 5rem;
+}
+
+/* スマホ表示でははみ出しすぎると見切れるため、
+   通常の横並びか、余白を縮小する調整を行います。 */
+@media (max-width: 1024px) {
+  .header,
+  .body {
+    padding-left: 3.5rem;
+  }
+  .number {
+    left: -3.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .header,
+  .body {
+    padding-left: 0;
+  }
+  .titleUnit {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .number {
+    position: static;
+    left: auto;
+  }
+}
