@@ -1,4 +1,4 @@
-import { HttpError, createApi } from '@liha/apizel'
+import { HttpError, createApi } from '@liha-labs/apizel'
 
 const log = (title: string, value: unknown) => {
   globalThis.console.log(`[playground] ${title}`, value)

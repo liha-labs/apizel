@@ -11,15 +11,15 @@
 ## Install
 
 ```bash
-pnpm add apizel
-# npm i apizel
-# yarn add apizel
+pnpm add @liha-labs/apizel
+# npm i @liha-labs/apizel
+# yarn add @liha-labs/apizel
 ````
 
 ## Quick Start
 
 ```ts
-import { apizel } from 'apizel'
+import { apizel } from '@liha-labs/apizel'
 
 type Me = { id: string; name: string }
 

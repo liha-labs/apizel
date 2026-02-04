@@ -17,7 +17,7 @@
 
 ## Packages
 
-- `apizel` (core)
+- `@liha-labs/apizel` (core)
 
 ---
 
@@ -25,11 +25,11 @@
 
 ```bash
 
-pnpm add apizel
+pnpm add @liha-labs/apizel
 
-# npm i apizel
+# npm i @liha-labs/apizel
 
-# yarn add apizel
+# yarn add @liha-labs/apizel
 
 ````
 
@@ -39,7 +39,7 @@ pnpm add apizel
 
 ```ts
 
-import { apizel } from 'apizel'
+import { apizel } from '@liha-labs/apizel'
 
 type Me = { id: string; name: string }
 
@@ -87,7 +87,7 @@ await api.post('/v1/upload', fd)
 Non-2xx responses throw `HttpError`.
 
 ```ts
-import { HttpError } from 'apizel'
+import { HttpError } from '@liha-labs/apizel'
 
 try {
 	await api.get('/v1/me')

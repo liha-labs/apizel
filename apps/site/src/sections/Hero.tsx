@@ -3,10 +3,10 @@ import { copyCmd } from '../utils'
 import styles from './Hero.module.css'
 
 export const Hero = () => {
-  const installCmd = 'pnpm add @liha/apizel'
+  const installCmd = 'pnpm add @liha-labs/apizel'
 
   const sampleCode = `
-import { apizel, type ApizelConfig } from 'apizel'
+import { apizel, type ApizelConfig } from '@liha-labs/apizel'
 
 const config: ApizelConfig = {
   baseURL: 'https://api.example.com',
