@@ -10,7 +10,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@liha/apizel": "workspace:*"
+    "@liha-labs/apizel": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^5.6.0",

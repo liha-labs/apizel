@@ -2,10 +2,10 @@ import { CodeEditor, Section } from '../components'
 import styles from './QuickStart.module.css'
 
 export const QuickStart = () => {
-  const installCode = `pnpm add @liha/apizel`
+  const installCode = `pnpm add @liha-labs/apizel`
 
   const minimalCode = `
-import { apizel } from '@liha/apizel'
+import { apizel } from '@liha-labs/apizel'
 
 const api = apizel.create({
   baseURL: 'https://api.example.com'
@@ -27,7 +27,7 @@ console.log(user.name)
   `.trim()
 
   const errorCode = `
-import { HttpError } from '@liha/apizel'
+import { HttpError } from '@liha-labs/apizel'
 
 try {
   await api.get('/data', { timeoutMs: 3000 })

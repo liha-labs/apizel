@@ -1,5 +1,5 @@
 {
-  "name": "@liha/apizel",
+  "name": "@liha-labs/apizel",
   "version": "0.0.0",
   "description": "Lightweight fetch-based API client for Web + React Native.",
   "license": "MIT",
