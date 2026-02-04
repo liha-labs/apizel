@@ -1,12 +1,15 @@
 {
   "name": "@liha-labs/apizel",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Lightweight fetch-based API client for Web + React Native.",
   "license": "MIT",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -14,10 +17,15 @@
       "require": "./dist/index.cjs"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "sideEffects": false,
   "scripts": {
     "build": "tsup",
+    "prepublishOnly": "pnpm build",
     "test": "vitest run",
     "dev": "tsup --watch",
     "typecheck": "tsc -p tsconfig.json --noEmit"
