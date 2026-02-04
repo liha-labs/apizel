@@ -1,0 +1,233 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #ffffff;
+}
+
+/* --- Header --- */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: 72px;
+  background: #fff;
+}
+
+.headerInner {
+  max-width: 1400px;
+  height: 100%;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  font-size: 1.4rem;
+  font-weight: 950;
+  letter-spacing: -0.06em;
+  color: #000;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.logo:hover {
+  opacity: 0.7;
+}
+
+.headerNav {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.githubLink {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+  color: #000;
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 0.5rem 0.8rem;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+
+.githubLink:hover {
+  background: #f5f5f5;
+}
+
+.headerSocials {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-left: 1rem;
+  border-left: 1px solid #f0f0f0;
+}
+
+.headerSocials a {
+  display: flex;
+  align-items: center;
+  color: #666;
+  transition: color 0.2s;
+}
+
+.headerSocials a:hover {
+  color: #000;
+}
+
+.icon {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+/* --- Main Content Area --- */
+.main {
+  flex: 1;
+  min-width: 0;
+  padding: 0 4rem 10rem 4rem;
+}
+
+.content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* --- Footer Area --- */
+.footerSection {
+  width: 100%;
+  border-top: 1px solid #f0f0f0;
+}
+
+/* --- Responsive --- */
+@media (max-width: 1024px) {
+  .sidebar {
+    display: none;
+  }
+  .main {
+    padding: 0 2rem 5rem 2rem;
+  }
+  .wrapper {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    height: 64px;
+  }
+  .sidebar {
+    top: 64px;
+    height: calc(100vh - 64px);
+  }
+  .githubLink span {
+    display: none;
+  }
+}
+
+/* サイドバーの開始位置を微調整（ヘッダーの高さ変更に合わせる） */
+.sidebar {
+  width: 280px;
+  padding: 3rem 2rem;
+  position: sticky;
+  top: 72px; /* headerの高さ */
+  height: calc(100vh - 72px);
+  overflow-y: auto;
+  border-right: 1px solid #f0f0f0;
+}
+
+@media (max-width: 768px) {
+  .header {
+    height: 64px;
+  }
+  .githubLink span {
+    display: none; /* スマホではアイコンのみ */
+  }
+}
+
+/* --- Sidebar & Main Layout --- */
+.wrapper {
+  display: flex;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  flex: 1; /* コンテンツが少なくてもフッターを下に押しやる */
+}
+
+.sidebar {
+  width: 280px;
+  padding: 3rem 2rem;
+  position: sticky;
+  top: 64px; /* headerの高さを考慮 */
+  height: calc(100vh - 64px);
+  overflow-y: auto;
+  border-right: 1px solid #f0f0f0;
+}
+
+.sideNav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sideNav li {
+  margin-bottom: 0.5rem;
+}
+
+.sideNav a {
+  display: block;
+  padding: 8px 12px;
+  color: #666;
+  text-decoration: none;
+  font-size: 0.92rem;
+  font-weight: 500;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.sideNav a:hover {
+  background-color: #f5f5f5;
+  color: #000;
+}
+
+.sideNav a.active {
+  background-color: #f5f5f5;
+  color: #000;
+  font-weight: 600;
+}
+
+/* --- Main Content Area --- */
+.main {
+  flex: 1;
+  min-width: 0; /* flex崩れ防止 */
+  padding: 0 4rem 10rem 4rem;
+}
+
+.content {
+  max-width: 800px; /* 読みやすい一行の長さを維持 */
+  margin: 0 auto;
+}
+
+/* --- Footer Area --- */
+.footerSection {
+  width: 100%;
+  border-top: 1px solid #f0f0f0;
+  /* フッター自体に背景（巨大ロゴ）があるため、ここでは最小限の設定 */
+}
+
+/* --- Responsive --- */
+@media (max-width: 1024px) {
+  .sidebar {
+    display: none;
+  }
+  .main {
+    padding: 0 2rem 5rem 2rem;
+  }
+  .wrapper {
+    max-width: 100%;
+  }
+}

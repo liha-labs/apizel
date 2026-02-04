@@ -1,0 +1,169 @@
+.subSection {
+  margin-bottom: 8rem;
+}
+
+.subTitle {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  margin-bottom: 1.5rem;
+  color: #000;
+}
+
+.desc {
+  font-size: 1.15rem;
+  color: var(--text-mute);
+  margin-bottom: 2rem;
+  line-height: 1.7;
+}
+
+.specList {
+  list-style: none;
+  padding: 0;
+}
+
+.specList li {
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  color: var(--text-mute);
+}
+
+.specList strong {
+  color: #000;
+  font-family: var(--font-mono);
+  margin-right: 0.75rem;
+}
+
+/* --- Body Handling Table --- */
+.bodyTable {
+  border-top: 2px solid #000;
+  margin-top: 2rem;
+}
+
+.bodyTableRow {
+  display: flex;
+  align-items: center;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--border);
+  gap: 2rem;
+}
+
+.bodyType {
+  width: 220px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.typeBadge {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: var(--text-mute);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.typeContent {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #000;
+  white-space: nowrap;
+}
+
+.bodyArrow {
+  color: var(--border);
+  font-family: var(--font-mono);
+  font-weight: 300;
+  font-size: 1.2rem;
+}
+
+.bodyResult {
+  flex: 1;
+  white-space: nowrap;
+}
+
+.bodyResult strong {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  margin-bottom: 0.15rem;
+  color: #000;
+}
+
+.bodyResult span {
+  font-size: 0.85rem;
+  color: var(--text-mute);
+}
+
+/* --- Errors New Layout --- */
+.errorStack {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; /* カード同士の隙間 */
+}
+
+.errorCard {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  min-height: 120px;
+  transition: border-color 0.2s;
+}
+
+.errorCard:hover {
+  border-color: #000;
+}
+
+.errorHeader {
+  background: #f7f7f7; /* 画像に基づいた薄いグレー */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  border-right: 1px solid var(--border);
+}
+
+.errorBadge {
+  background: #000;
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  min-width: 120px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.errorContent {
+  padding: 2.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.errorContent p {
+  font-size: 1.1rem;
+  color: #4b5563;
+  line-height: 1.6;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .errorCard {
+    grid-template-columns: 1fr;
+  }
+  .errorHeader {
+    padding: 1.5rem;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    justify-content: flex-start;
+  }
+  .errorContent {
+    padding: 1.5rem;
+  }
+}

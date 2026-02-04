@@ -1,0 +1,150 @@
+.footer {
+  position: relative; /* 背景文字の基準点 */
+  padding: 12rem 0 4rem; /* 背景文字に合わせて上部パディングを増加 */
+  background: #fff;
+  overflow: hidden; /* 巨大な文字が画面外に突き抜けるのを許容する */
+}
+
+/* 背景の巨大ロゴ - 中央配置に修正 */
+.backgroundText {
+  position: absolute;
+  bottom: -0.12em; /* 地面に埋まるように微調整 */
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 30vw; /* 画面幅の30% */
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  color: #f7f7f7; /* 背景と馴染む極薄のグレー */
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap; /* 折り返しを防止して中央を維持 */
+}
+
+.container {
+  position: relative;
+  z-index: 1; /* 背景文字より前に出す */
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.topSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8rem;
+}
+
+/* ブランドエリア */
+.brand {
+  max-width: 400px;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  margin-bottom: 1rem;
+}
+
+.tagline {
+  font-size: 1rem;
+  color: #000;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.catchphrase {
+  font-size: 0.9rem;
+  color: var(--text-mute);
+}
+
+/* リンクエリア */
+.linksContainer {
+  display: flex;
+  gap: 6rem;
+}
+
+.linkGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.linkHeading {
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-mute);
+  margin-bottom: 2.5rem;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.nav a {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #000;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.nav a:hover {
+  opacity: 0.5;
+}
+
+.communityCta {
+  margin-top: 2rem;
+  font-size: 0.8rem;
+  color: var(--text-mute);
+  max-width: 140px;
+  line-height: 1.4;
+}
+
+/* メタ情報 */
+.bottomSection {
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.meta {
+  font-size: 0.85rem;
+  color: var(--text-mute);
+}
+
+@media (max-width: 768px) {
+  .footer {
+    padding: 8rem 0 3rem;
+  }
+
+  .backgroundText {
+    font-size: 45vw; /* モバイルではより巨大に見せる */
+    bottom: -0.05em;
+  }
+
+  .topSection {
+    flex-direction: column;
+    gap: 5rem;
+    margin-bottom: 6rem;
+  }
+
+  .linksContainer {
+    gap: 4rem;
+    flex-wrap: wrap;
+  }
+
+  .bottomSection {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+}
