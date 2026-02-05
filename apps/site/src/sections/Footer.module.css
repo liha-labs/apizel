@@ -119,6 +119,22 @@
 .meta {
   font-size: 0.85rem;
   color: var(--text-mute);
+  display: flex; /* 追加: 横並びあるいは縦並びの整理のため */
+  flex-direction: column; /* 追加 */
+  gap: 0.5rem; /* 追加 */
+}
+
+.producedBy {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #000;
+  font-weight: 500;
+}
+
+.lihaLogo {
+  display: block;
+  opacity: 0.8;
 }
 
 @media (max-width: 768px) {

@@ -48,6 +48,17 @@ export const Footer = () => {
 
         <div className={styles.bottomSection}>
           <div className={styles.meta}>
+            <div className={styles.producedBy}>
+              <span>Produced by</span>
+              <img
+                src="/liha-lab-logo.svg"
+                alt="Liha Labs"
+                className={styles.lihaLogo}
+                width={20}
+                height={20}
+              />
+              <strong>Liha Labs</strong>
+            </div>
             <span>© 2026 Liha Labs. Released under the MIT License.</span>
           </div>
         </div>

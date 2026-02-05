@@ -13,22 +13,21 @@ export const Usage = () => {
       <div className={styles.subSection}>
         <h3 className={styles.subTitle}>Creating a client</h3>
         <p className={styles.desc}>
-          <code>apizel.create()</code> で共通設定を持つインスタンスを作成します。
+          <code>apizel()</code> で共通設定を持つインスタンスを作成します。
         </p>
-        <ul className={styles.specList}>
-          <li>
-            <strong>baseURL:</strong> 全てのリクエストの起点となるURL
-          </li>
-          <li>
-            <strong>headers:</strong> 全リクエストに付与される共通ヘッダー
-          </li>
-          <li>
-            <strong>timeoutMs:</strong> デフォルトのタイムアウト時間
-          </li>
-          <li>
-            <strong>auth:</strong> 認証トークンとリフレッシュのロジック
-          </li>
-        </ul>
+        <CodeEditor
+          filename="client.ts"
+          code={`
+import { apizel } from '@liha-labs/apizel'
+
+const api = apizel({
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  timeoutMs: 10000,
+})`}
+        />
       </div>
 
       {/* 2. Request options */}

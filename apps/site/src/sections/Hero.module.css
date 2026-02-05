@@ -55,48 +55,7 @@
   flex-wrap: wrap;
 }
 
-.pnpmBox {
-  background: #000;
-  color: #fff;
-  padding: 0 1.25rem;
-  height: 48px; /* ボタンの高さをGitHubボタンと合わせる */
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-family: var(--font-mono);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  min-width: 0;
-}
 
-.pnpmPrompt {
-  color: #666;
-  user-select: none;
-}
-
-.pnpmCmd {
-  font-size: 0.9rem;
-  font-weight: 500;
-  white-space: nowrap;
-}
-
-.pnpmCopy {
-  background: transparent;
-  border: none;
-  color: #666;
-  cursor: pointer;
-  padding: 4px;
-  margin-left: 4px;
-  border-radius: 4px;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-}
-
-.pnpmCopy:hover {
-  color: #fff;
-  background-color: rgba(255, 255, 255, 0.15);
-}
 
 .githubBtn {
   background-color: #fff;

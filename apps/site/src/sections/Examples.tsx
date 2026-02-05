@@ -95,11 +95,9 @@ const upload = useMutation({
         <CodeEditor
           filename="auth.ts"
           code={`
-const api = apizel.create({
-  auth: {
-    getAccessToken: async () => await storage.getToken(),
-    shouldAttachToken: (req) => !req.url.includes('/auth/login')
-  }
+const api = apizel({
+  getAccessToken: async () => await storage.getToken(),
+  shouldAttachToken: (req) => !req.endpoint.includes('/auth/login')
 })
           `}
         />
@@ -125,15 +123,13 @@ const api = apizel.create({
         <CodeEditor
           filename="refresh.ts"
           code={`
-const api = apizel.create({
-  auth: {
-    refresh: async () => {
-      const { token } = await api.post('/auth/refresh')
-      return token // 自動的に retry に使用される
-    },
-    onRefreshFailed: () => {
-      logout() // リフレッシュ失敗時のハンドリング
-    }
+const api = apizel({
+  refresh: async () => {
+    const { token } = await api.post('/auth/refresh')
+    return token // 自動的に retry に使用される
+  },
+  onRefreshFailed: () => {
+    logout() // リフレッシュ失敗時のハンドリング
   }
 })
           `}

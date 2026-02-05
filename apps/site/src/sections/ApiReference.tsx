@@ -21,6 +21,11 @@ export const ApiReference = () => {
       {/* 2. ApizelConfig */}
       <div className={styles.refBlock}>
         <h3 className={styles.refTitle}>ApizelConfig</h3>
+        <p className={styles.refDesc}>
+          設定オブジェクト（フラットな構造です）。
+          <br />
+          <code>auth</code> や <code>observe</code> は論理的なグルーピングであり、ネストではありません。
+        </p>
         <div className={styles.propGrid}>
           <div className={styles.propRow}>
             <div className={styles.propName}>
@@ -35,24 +40,63 @@ export const ApiReference = () => {
             <div className={styles.propName}>headers</div>
             <div className={styles.propDetail}>
               <code>Record&lt;string, string&gt;</code>
-              <p>全リクエスト共通ヘッダー。リクエスト単位で上書き可能です。</p>
+              <p>全リクエスト共通ヘッダー。リクエスト単位で上書き可能です（後勝ち）。</p>
+            </div>
+          </div>
+
+          {/* headers group: Auth */}
+          <div className={styles.propHeader}>Auth</div>
+          <div className={styles.propRow}>
+            <div className={styles.propName}>getAccessToken</div>
+            <div className={styles.propDetail}>
+              <code>() =&gt; string | null | Promise&lt;string | null&gt;</code>
+              <p>現在のアクセストークンを取得する関数。同期・非同期のどちらでも可能です。</p>
             </div>
           </div>
           <div className={styles.propRow}>
-            <div className={styles.propName}>auth</div>
+            <div className={styles.propName}>shouldAttachToken</div>
             <div className={styles.propDetail}>
-              <code>{'{ getAccessToken, refresh, ... }'}</code>
+              <code>(req: RequestMeta) =&gt; boolean</code>
               <p>
-                <strong>getAccessToken:</strong> トークン取得関数。
+                特定のリクエストにトークンを付与するかどうかの判定。
                 <br />
-                <strong>refresh:</strong> 401時に1度だけ実行される新トークン取得関数。
+                未定義の場合は<strong>全リクエストに付与</strong>されます。
               </p>
             </div>
           </div>
           <div className={styles.propRow}>
-            <div className={styles.propName}>observe</div>
+            <div className={styles.propName}>refresh</div>
             <div className={styles.propDetail}>
-              <code>{'{ onRequest, onResponse }'}</code>
+              <code>() =&gt; Promise&lt;string&gt;</code>
+              <p>
+                401エラー時に実行されるトークン再取得関数。新しいトークンを返してください。
+                <br />
+                <strong>Single-flight: </strong>
+                並行リクエストがあっても1回だけ実行され、他は待機します。
+                <br />
+                <strong>Safety: </strong>
+                リフレッシュ処理中の再帰的な401エラーは無視され、無限ループを防ぎます。
+              </p>
+            </div>
+          </div>
+          <div className={styles.propRow}>
+            <div className={styles.propName}>onRefreshFailed</div>
+            <div className={styles.propDetail}>
+              <code>() =&gt; void | Promise&lt;void&gt;</code>
+              <p>リフレッシュ処理が失敗（例外スロー）した場合のフック。ログアウト処理などに。</p>
+            </div>
+          </div>
+
+          {/* headers group: Analyze */}
+          <div className={styles.propHeader}>Observe</div>
+          <div className={styles.propRow}>
+            <div className={styles.propName}>
+              onRequest
+              <br />
+              onResponse
+            </div>
+            <div className={styles.propDetail}>
+              <code>(ctx) =&gt; void | Promise&lt;void&gt;</code>
               <p>観測用フック。ログ、計測、デバッグ出力などに使用（挙動の変更は不可）。</p>
             </div>
           </div>
@@ -70,6 +114,17 @@ export const ApiReference = () => {
           <code>.put&lt;T&gt;(endpoint, body?, options?)</code>
           <code>.patch&lt;T&gt;(endpoint, body?, options?)</code>
         </div>
+        <div className={styles.note}>
+          <strong>Body Handling:</strong>
+          <ul>
+            <li>
+              <code>FormData</code>, <code>URLSearchParams</code>, <code>Blob</code> はそのまま送信
+            </li>
+            <li>
+              その他は <code>JSON.stringify</code> され、Content-Type: application/json が自動付与
+            </li>
+          </ul>
+        </div>
       </div>
 
       {/* 4. RequestOptions & Params */}
@@ -80,9 +135,10 @@ export const ApiReference = () => {
             <div className={styles.propName}>params</div>
             <div className={styles.propDetail}>
               <p>
-                配列は repeat 形式（<code>tag: ['a','b']</code> → <code>?tag=a&tag=b</code>
-                ）で展開。
-                <br />※ Object 形式は非対応（エラーをスロー）。
+                Query String として展開されます。
+                <br />
+                配列は repeat 形式（<code>tag: ['a','b']</code> → <code>?tag=a&tag=b</code>）
+                <br />※ 軽量化のため Object のネストは非対応（意図的にエラーをスロー）。
               </p>
             </div>
           </div>

@@ -17,22 +17,7 @@
   line-height: 1.7;
 }
 
-.specList {
-  list-style: none;
-  padding: 0;
-}
 
-.specList li {
-  margin-bottom: 1rem;
-  font-size: 1rem;
-  color: var(--text-mute);
-}
-
-.specList strong {
-  color: #000;
-  font-family: var(--font-mono);
-  margin-right: 0.75rem;
-}
 
 /* --- Body Handling Table --- */
 .bodyTable {
