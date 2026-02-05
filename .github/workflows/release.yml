@@ -27,6 +27,12 @@ jobs:
       - name: Build apizel
         run: pnpm -C packages/apizel build
 
+      - name: Verify dist exists
+        run: |
+          test -f packages/apizel/dist/index.js
+          test -f packages/apizel/dist/index.cjs
+          test -f packages/apizel/dist/index.d.ts
+
       - name: Check OIDC env (safe)
         shell: bash
         run: |
@@ -44,4 +50,10 @@ jobs:
           NODE_AUTH_TOKEN: ''
           NPM_TOKEN: ''
           NPM_CONFIG_USERCONFIG: /dev/null
-        run: npm publish --access public --provenance
+        run: |
+          VERSION="$(node -p "require('./package.json').version")"
+          if npm view @liha-labs/apizel@"$VERSION" version >/dev/null 2>&1; then
+            echo "Already published: @liha-labs/apizel@$VERSION"
+            exit 0
+          fi
+          npm publish --access public --provenance
