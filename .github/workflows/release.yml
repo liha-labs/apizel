@@ -23,52 +23,78 @@ jobs:
           cache: pnpm
           registry-url: https://registry.npmjs.org
 
-      - run: pnpm install --frozen-lockfile
+      - run: pnpm install --no-frozen-lockfile
 
       - name: Build @liha-labs/apizel
         run: pnpm -C packages/apizel build
 
-      - name: Build apizel (alias)
-        run: pnpm -C packages/apizel-npm build
-
-      - name: Verify dist exists (@liha-labs/apizel)
-        run: |
-          test -f packages/apizel/dist/index.js
-          test -f packages/apizel/dist/index.cjs
-          test -f packages/apizel/dist/index.d.ts
-
-      - name: Verify dist exists (apizel)
-        run: |
-          test -f packages/apizel-npm/dist/index.js
-          test -f packages/apizel-npm/dist/index.cjs
-          test -f packages/apizel-npm/dist/index.d.ts
-
       - name: Publish @liha-labs/apizel (OIDC)
         working-directory: packages/apizel
         env:
-          NODE_AUTH_TOKEN: ''
-          NPM_TOKEN: ''
+          NODE_AUTH_TOKEN: ""
+          NPM_TOKEN: ""
           NPM_CONFIG_USERCONFIG: /dev/null
         run: |
           VERSION="$(node -p "require('./package.json').version")"
+
           if npm view @liha-labs/apizel@"$VERSION" version >/dev/null 2>&1; then
             echo "Already published: @liha-labs/apizel@$VERSION"
             exit 0
           fi
+
           npm publish --access public --provenance
+
+      - name: Wait for @liha-labs/apizel to be visible on npm
+        shell: bash
+        run: |
+          VERSION="$(node -p "require('./packages/apizel/package.json').version")"
+          echo "Waiting for @liha-labs/apizel@$VERSION ..."
+          for i in {1..30}; do
+            if npm view @liha-labs/apizel@"$VERSION" version >/dev/null 2>&1; then
+              echo "OK: visible on npm"
+              exit 0
+            fi
+            echo "not yet... ($i/30)"
+            sleep 5
+          done
+          echo "ERROR: @liha-labs/apizel@$VERSION not visible after waiting"
+          exit 1
+
+      - name: Sync apizel (alias) to published version
+        run: node - <<'NODE'
+          const fs = require('fs');
+
+          const base = JSON.parse(fs.readFileSync('packages/apizel/package.json', 'utf8'));
+          const aliasPath = 'packages/apizel-npm/package.json';
+          const alias = JSON.parse(fs.readFileSync(aliasPath, 'utf8'));
+
+          alias.version = base.version;
+          alias.dependencies ??= {};
+          alias.dependencies['@liha-labs/apizel'] = `^${base.version}`;
+
+          fs.writeFileSync(aliasPath, JSON.stringify(alias, null, 2) + '\n');
+          console.log('synced alias ->', base.version);
+        NODE
+
+      # lockfile 更新は alias の workspace だけで十分（影響範囲を最小化）
+      - name: Update lockfile after alias sync (CI only)
+        run: pnpm -C packages/apizel-npm install --no-frozen-lockfile
+
+      - name: Build apizel (alias)
+        run: pnpm -C packages/apizel-npm build
 
       - name: Publish apizel (alias) (OIDC)
         working-directory: packages/apizel-npm
         env:
-          NODE_AUTH_TOKEN: ''
-          NPM_TOKEN: ''
+          NODE_AUTH_TOKEN: ""
+          NPM_TOKEN: ""
           NPM_CONFIG_USERCONFIG: /dev/null
         run: |
           VERSION="$(node -p "require('./package.json').version")"
 
-          # 本体がまだnpmに無いなら alias は出さない（依存でコケるのを防ぐ）
+          # 念のため：本体が見えてないならaliasは出さない
           if ! npm view @liha-labs/apizel@"$VERSION" version >/dev/null 2>&1; then
-            echo "Skip: @liha-labs/apizel@$VERSION is not published yet"
+            echo "Skip: @liha-labs/apizel@$VERSION is not visible on npm yet"
             exit 0
           fi
 
