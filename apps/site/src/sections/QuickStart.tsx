@@ -90,16 +90,15 @@ try {
           <p>中断（Abort）とサーバーエラーを明確に分離してハンドリングします。</p>
         </div>
         <CodeEditor code={errorCode} filename="error.ts" />
-      </div>
-
-      <div className={styles.pitfall}>
-        <h5>💡 落とし穴：Timeout は例外的な挙動です</h5>
-        <p>
-          <code>timeoutMs</code>{' '}
-          による中断は、サーバーが返したエラー（HttpError）ではなく、ブラウザ標準の{' '}
-          <strong>AbortError</strong> をスローします。
-          「通信そのものが成立しなかった」のか「サーバーが拒否したのか」を型レベルで安全に区別するための設計です。
-        </p>
+        <div className={styles.pitfall}>
+          <h5>💡 落とし穴：Timeout は例外的な挙動です</h5>
+          <p>
+            <code>timeoutMs</code>{' '}
+            による中断は、サーバーが返したエラー（HttpError）ではなく、ブラウザ標準の{' '}
+            <strong>AbortError</strong> をスローします。
+            「通信そのものが成立しなかった」のか「サーバーが拒否したのか」を型レベルで安全に区別するための設計です。
+          </p>
+        </div>
       </div>
     </Section>
   )
