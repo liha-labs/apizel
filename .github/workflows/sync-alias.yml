@@ -1,0 +1,62 @@
+name: Sync alias PR
+
+on:
+  workflow_run:
+    workflows: ['Release']
+    types: [completed]
+
+jobs:
+  sync:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      # frozen でOK（repo側が正しければ）
+      - run: pnpm install --frozen-lockfile
+
+      # npmに存在する版だけ追従（fix-packages.mjs にガード済み想定）
+      - name: Sync alias package.json (safe)
+        run: pnpm fix:packages
+
+      # 変更がないなら PR を作らない（無駄PR防止）
+      - name: Detect changes
+        id: diff
+        shell: bash
+        run: |
+          if git diff --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No changes"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "Changes detected"
+          fi
+
+      - name: Create PR
+        if: ${{ steps.diff.outputs.changed == 'true' }}
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: chore/sync-alias
+          delete-branch: true
+          title: ':package: sync alias with published apizel'
+          commit-message: ':package: sync alias with published apizel'
+          body: |
+            This PR syncs `packages/apizel-npm` to match the latest published `@liha-labs/apizel`.
+
+            - Updates alias version
+            - Updates dependency range
+            - Keeps provenance metadata consistent
