@@ -1,19 +1,6 @@
-import { useCallback, useMemo } from 'react'
-import { PrismAsyncLight as SyntaxHighlighter } from 'react-syntax-highlighter'
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
-
-import bash from 'react-syntax-highlighter/dist/esm/languages/prism/bash'
-import js from 'react-syntax-highlighter/dist/esm/languages/prism/javascript'
-import tsx from 'react-syntax-highlighter/dist/esm/languages/prism/tsx'
-import ts from 'react-syntax-highlighter/dist/esm/languages/prism/typescript'
-
+import { useCallback, useEffect, useMemo, useState, type ComponentType } from 'react'
 import { copyCmd } from '../utils'
 import styles from './CodeEditor.module.css'
-
-SyntaxHighlighter.registerLanguage('ts', ts)
-SyntaxHighlighter.registerLanguage('tsx', tsx)
-SyntaxHighlighter.registerLanguage('js', js)
-SyntaxHighlighter.registerLanguage('bash', bash)
 
 type Props = {
   code: string
@@ -23,6 +10,38 @@ type Props = {
 }
 
 export function CodeEditor({ code, filename, lang = 'ts', withHeader = true }: Props) {
+  const [Highlighter, setHighlighter] = useState<ComponentType<any> | null>(null)
+  const [style, setStyle] = useState<any>(null)
+
+  useEffect(() => {
+    const loadHighlighter = async () => {
+      try {
+        // 動的インポートにより、サーバーサイドでの評価を回避
+        const { PrismAsyncLight: SyntaxHighlighter } = await import('react-syntax-highlighter')
+        const { vscDarkPlus } = await import('react-syntax-highlighter/dist/esm/styles/prism')
+
+        const [bash, js, tsx, ts] = await Promise.all([
+          import('react-syntax-highlighter/dist/esm/languages/prism/bash').then(m => m.default),
+          import('react-syntax-highlighter/dist/esm/languages/prism/javascript').then(m => m.default),
+          import('react-syntax-highlighter/dist/esm/languages/prism/tsx').then(m => m.default),
+          import('react-syntax-highlighter/dist/esm/languages/prism/typescript').then(m => m.default),
+        ])
+
+        SyntaxHighlighter.registerLanguage('ts', ts)
+        SyntaxHighlighter.registerLanguage('tsx', tsx)
+        SyntaxHighlighter.registerLanguage('js', js)
+        SyntaxHighlighter.registerLanguage('bash', bash)
+
+        setHighlighter(() => SyntaxHighlighter)
+        setStyle(vscDarkPlus)
+      } catch (e) {
+        console.error('Failed to load syntax highlighter', e)
+      }
+    }
+
+    loadHighlighter()
+  }, [])
+
   const trimmedCode = useMemo(() => code.replace(/^\s*\n+|\n+\s*$/g, ''), [code])
 
   const copy = useCallback(async () => {
@@ -80,24 +99,38 @@ export function CodeEditor({ code, filename, lang = 'ts', withHeader = true }: P
         </button>
       )}
 
-      <SyntaxHighlighter
-        language={lang}
-        style={vscDarkPlus}
-        PreTag="div"
-        wrapLongLines
-        customStyle={{
-          background: 'transparent',
-          paddingTop: 12.5,
-          paddingBottom: 12.5,
-          paddingLeft: 16,
-          paddingRight: withHeader ? 16 : 48,
-          margin: 0,
-        }}
-        codeTagProps={{ className: styles.code }}
-        className={styles.pre}
-      >
-        {code.trim()}
-      </SyntaxHighlighter>
+      {Highlighter && style ? (
+        <Highlighter
+          language={lang}
+          style={style}
+          PreTag="div"
+          wrapLongLines
+          customStyle={{
+            background: 'transparent',
+            paddingTop: 12.5,
+            paddingBottom: 12.5,
+            paddingLeft: 16,
+            paddingRight: withHeader ? 16 : 48,
+            margin: 0,
+          }}
+          codeTagProps={{ className: styles.code }}
+          className={styles.pre}
+        >
+          {code.trim()}
+        </Highlighter>
+      ) : (
+        <pre
+          className={styles.pre}
+          style={{
+            paddingTop: 12.5,
+            paddingBottom: 12.5,
+            paddingLeft: 16,
+            paddingRight: withHeader ? 16 : 48,
+          }}
+        >
+          <code className={styles.code}>{code.trim()}</code>
+        </pre>
+      )}
     </div>
   )
 }
