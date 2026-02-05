@@ -25,31 +25,24 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      # 1) versions + wrapper sync（ここで scripts/fix-packages.mjs が走る運用にしておく）
-      - name: Version packages and sync metadata
-        run: pnpm version-packages
-
-      # 2) build both
-      - name: Build apizel
+      - name: Build @liha-labs/apizel
         run: pnpm -C packages/apizel build
 
-      - name: Build apizel-npm
+      - name: Build apizel (alias)
         run: pnpm -C packages/apizel-npm build
 
-      # 3) sanity check
-      - name: Verify dist exists (apizel)
+      - name: Verify dist exists (@liha-labs/apizel)
         run: |
           test -f packages/apizel/dist/index.js
           test -f packages/apizel/dist/index.cjs
           test -f packages/apizel/dist/index.d.ts
 
-      - name: Verify dist exists (apizel-npm)
+      - name: Verify dist exists (apizel)
         run: |
           test -f packages/apizel-npm/dist/index.js
           test -f packages/apizel-npm/dist/index.cjs
           test -f packages/apizel-npm/dist/index.d.ts
 
-      # 4) publish (skip if already published)
       - name: Publish @liha-labs/apizel (OIDC)
         working-directory: packages/apizel
         env:
@@ -64,7 +57,7 @@ jobs:
           fi
           npm publish --access public --provenance
 
-      - name: Publish apizel (OIDC)
+      - name: Publish apizel (alias) (OIDC)
         working-directory: packages/apizel-npm
         env:
           NODE_AUTH_TOKEN: ''
@@ -72,8 +65,16 @@ jobs:
           NPM_CONFIG_USERCONFIG: /dev/null
         run: |
           VERSION="$(node -p "require('./package.json').version")"
+
+          # 本体がまだnpmに無いなら alias は出さない（依存でコケるのを防ぐ）
+          if ! npm view @liha-labs/apizel@"$VERSION" version >/dev/null 2>&1; then
+            echo "Skip: @liha-labs/apizel@$VERSION is not published yet"
+            exit 0
+          fi
+
           if npm view apizel@"$VERSION" version >/dev/null 2>&1; then
             echo "Already published: apizel@$VERSION"
             exit 0
           fi
+
           npm publish --access public --provenance
