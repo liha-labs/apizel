@@ -10,7 +10,7 @@
 - ✅ **401 refresh retry**: refresh は single-flight、リトライは 1 回だけ
 - ✅ **Observe hooks**: `onRequest` / `onResponse` は観測のみ
 
-> Status: **v0.0.1 (WIP)**
+> Status: **v0.1.2**
 > Design goal: “軽く、標準に沿い、必要なら捨てられる”。
 
 ---
@@ -31,7 +31,7 @@ pnpm add @liha-labs/apizel
 
 # yarn add @liha-labs/apizel
 
-````
+```
 
 ---
 
@@ -156,7 +156,7 @@ const api = apizel({
 
 ## Documentation
 
-* Docs site: (GitHub Pages URL here)
+* Docs site: https://apizel.liha.dev/
 * API reference: https://github.com/liha-labs/apizel
 
 ---
