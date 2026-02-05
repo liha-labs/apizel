@@ -10,7 +10,7 @@ export const ApiReference = () => {
       subTitle="apizel の全 API インターフェースと詳細な振る舞い。"
     >
       {/* 1. apizel() */}
-      <div className={styles.refBlock}>
+      <div className={styles.refBlock} id="reference-apizel">
         <h3 className={styles.refTitle}>apizel(config)</h3>
         <p className={styles.refDesc}>ApiClient インスタンスを生成します。</p>
         <div className={styles.signature}>
@@ -19,7 +19,7 @@ export const ApiReference = () => {
       </div>
 
       {/* 2. ApizelConfig */}
-      <div className={styles.refBlock}>
+      <div className={styles.refBlock} id="reference-config">
         <h3 className={styles.refTitle}>ApizelConfig</h3>
         <p className={styles.refDesc}>
           設定オブジェクト（フラットな構造です）。
@@ -104,7 +104,7 @@ export const ApiReference = () => {
       </div>
 
       {/* 3. ApiClient */}
-      <div className={styles.refBlock}>
+      <div className={styles.refBlock} id="reference-client">
         <h3 className={styles.refTitle}>ApiClient</h3>
         <p className={styles.refDesc}>Promise&lt;DTO&gt; を返す薄い5つのメソッドを提供します。</p>
         <div className={styles.methodList}>
@@ -128,7 +128,7 @@ export const ApiReference = () => {
       </div>
 
       {/* 4. RequestOptions & Params */}
-      <div className={styles.refBlock}>
+      <div className={styles.refBlock} id="reference-options">
         <h3 className={styles.refTitle}>RequestOptions & Params</h3>
         <div className={styles.propGrid}>
           <div className={styles.propRow}>
@@ -156,7 +156,7 @@ export const ApiReference = () => {
       </div>
 
       {/* 5. Errors */}
-      <div className={styles.refBlock}>
+      <div className={styles.refBlock} id="reference-errors">
         <h3 className={styles.refTitle}>Errors</h3>
         <div className={styles.propGrid}>
           <div className={styles.propRow}>

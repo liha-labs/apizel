@@ -14,8 +14,17 @@ export const Layout = ({ hero, children, footer }: LayoutProps) => {
     'introduction',
     'quickstart',
     'usage',
-    'reference', // API Reference の id
+    'reference',
+    'reference-apizel',
+    'reference-config',
+    'reference-client',
+    'reference-options',
+    'reference-errors',
     'examples',
+    'example-query-get',
+    'example-query-mutation',
+    'example-auth',
+    'example-refresh',
   ])
 
   // クラス付与のヘルパー
@@ -74,29 +83,87 @@ export const Layout = ({ hero, children, footer }: LayoutProps) => {
           <nav className={styles.sideNav}>
             <ul>
               <li>
-                <a href="#introduction" className={getNavLinkClass('#introduction')}>
+                <a href="#introduction" className={getNavLinkClass('introduction')}>
                   Introduction
                 </a>
               </li>
               <li>
-                <a href="#quickstart" className={getNavLinkClass('#quickstart')}>
+                <a href="#quickstart" className={getNavLinkClass('quickstart')}>
                   Quick Start
                 </a>
               </li>
               <li>
-                <a href="#usage" className={getNavLinkClass('#usage')}>
+                <a href="#usage" className={getNavLinkClass('usage')}>
                   Usage
                 </a>
               </li>
               <li>
-                <a href="#reference" className={getNavLinkClass('#reference')}>
+                <a href="#reference" className={getNavLinkClass('reference')}>
                   API Reference
                 </a>
+                <ul className={styles.subNav}>
+                  <li>
+                    <a
+                      href="#reference-apizel"
+                      className={getNavLinkClass('reference-apizel')}
+                    >
+                      apizel(config)
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#reference-config" className={getNavLinkClass('reference-config')}>
+                      ApizelConfig
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#reference-client" className={getNavLinkClass('reference-client')}>
+                      ApiClient
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#reference-options" className={getNavLinkClass('reference-options')}>
+                      Options & Params
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#reference-errors" className={getNavLinkClass('reference-errors')}>
+                      Errors
+                    </a>
+                  </li>
+                </ul>
               </li>
               <li>
-                <a href="#examples" className={getNavLinkClass('#examples')}>
+                <a href="#examples" className={getNavLinkClass('examples')}>
                   Examples
                 </a>
+                <ul className={styles.subNav}>
+                  <li>
+                    <a
+                      href="#example-query-get"
+                      className={getNavLinkClass('example-query-get')}
+                    >
+                      With TanStack Query (GET)
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#example-query-mutation"
+                      className={getNavLinkClass('example-query-mutation')}
+                    >
+                      With TanStack Query (Mutation)
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#example-auth" className={getNavLinkClass('example-auth')}>
+                      Auth Token
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#example-refresh" className={getNavLinkClass('example-refresh')}>
+                      Refresh on 401
+                    </a>
+                  </li>
+                </ul>
               </li>
             </ul>
           </nav>
