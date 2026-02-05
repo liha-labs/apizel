@@ -1,0 +1,115 @@
+# apizel Full Documentation
+
+apizel（アピゼル）は、Web標準の `fetch` APIを最優先に考え、Axiosのような巨大な抽象化を避けつつ、型安全で予測可能な開発体験を提供する軽量HTTPクライアントです。
+
+## 1. Introduction
+
+### Philosophy
+- **fetch-first**: ラッパーではなく、fetchを拡張する考え方
+- **minimal**: 依存ゼロ。バンドルサイズへの影響を最小限に
+- **standards**: URLSearchParams等の標準に準拠
+- **TS-friendly**: 徹底した型定義による開発体験の向上
+
+### Non-goals
+- 自動リトライ（401 refresh以外は対象外）
+- 型検証（zod等は利用側で実装）
+- ネストしたparams（`{ a: { b: 1 } }` 形式は非対応）
+
+### Features
+- JSON / FormData: Content-Typeを自動判別
+- timeout: AbortSignalベースの秒数指定
+- repeat array: クエリ配列を `key=a&key=b` へ展開
+- auth refresh: 401時のトークン再取得フロー（Single-flight対応）
+- observe hooks: onRequest / onResponse
+
+---
+
+## 2. Quick Start
+
+### Install
+```bash
+pnpm add @liha-labs/apizel
+```
+
+### Minimal Usage
+```ts
+import { apizel } from '@liha-labs/apizel'
+
+const api = apizel({
+  baseURL: 'https://api.example.com'
+})
+
+const data = await api.get('/status')
+```
+
+### Error Handling
+```ts
+import { HttpError } from '@liha-labs/apizel'
+
+try {
+  await api.get('/data', { timeoutMs: 3000 })
+} catch (err) {
+  if (err.name === 'AbortError') {
+    // タイムアウトまたは手動の中断
+  } else if (err instanceof HttpError) {
+    // 4xx, 5xx ステータスエラー
+  }
+}
+```
+
+---
+
+## 3. Usage
+
+### Creating a client
+```ts
+const api = apizel({
+  baseURL: '...',
+  headers: { 'Content-Type': 'application/json' },
+  timeoutMs: 10000,
+})
+```
+
+### Body Handling
+- **JSON**: `Object` / `Array` -> `application/json` (JSON.stringify)
+- **FormData**: `FormData` -> `(Multipart boundary)` (Browser default)
+- **Others**: `Blob`, `string` -> No transform
+
+### Query Params
+配列は `?tag=a&tag=b` 形式で展開されます。
+
+### Auth & Refresh
+```ts
+const api = apizel({
+  getAccessToken: () => localStorage.getItem('token'),
+  refresh: async () => {
+    const { token } = await api.post('/refresh')
+    return token
+  }
+})
+```
+
+---
+
+## 4. API Reference
+
+### apizel(config)
+`ApiClient` インスタンスを生成します。
+
+### ApizelConfig
+- `baseURL` (required): `string`
+- `headers`: `Record<string, string>`
+- `getAccessToken`: `() => string | null | Promise<string | null>`
+- `refresh`: `() => Promise<string>`
+- `onRequest` / `onResponse`: `(ctx) => void | Promise<void>`
+
+### ApiClient Methods
+- `.get<T>(endpoint, options?)`
+- `.delete<T>(endpoint, options?)`
+- `.post<T>(endpoint, body?, options?)`
+- `.put<T>(endpoint, body?, options?)`
+- `.patch<T>(endpoint, body?, options?)`
+
+### Errors
+- **HttpError**: `res.ok === false` の場合にスロー。`status`, `data`, `url` を保持。
+- **AbortError**: タイムアウトや中断時にスロー。

@@ -1,0 +1,26 @@
+# apizel
+
+> Thin fetch wrapper for TypeScript. Lightweight, standards-compliant, and predictable.
+
+## Links
+
+- [Documentation](https://apizel.liha.dev/)
+- [Full Documentation for AI](https://apizel.liha.dev/llms-full.txt)
+- [Repository](https://github.com/liha-labs/apizel)
+
+## Features
+
+- ✅ **Small & predictable**: No unnecessary abstractions.
+- ✅ **TanStack Query friendly**: Respects `signal`, uses Abort for `timeoutMs`.
+- ✅ **Minimal axios-like body**: FormData passthrough, JSON Content-Type fallback.
+- ✅ **401 refresh retry**: Single-flight refresh logic, retry once.
+- ✅ **Observe hooks**: `onRequest` / `onResponse` for observation only.
+
+## Usage Summary
+
+```ts
+import { apizel } from '@liha-labs/apizel'
+
+const api = apizel({ baseURL: 'https://api.example.com' })
+const data = await api.get<DTO>('/endpoint')
+```
