@@ -21,15 +21,16 @@ export const Layout = ({ hero, children, footer }: LayoutProps) => {
     'reference-options',
     'reference-errors',
     'examples',
-    'example-query-get',
-    'example-query-mutation',
-    'example-auth',
-    'example-refresh',
+    'examples-query-get',
+    'examples-query-mutation',
+    'examples-auth',
+    'examples-refresh',
   ])
 
   // クラス付与のヘルパー
   const getNavLinkClass = (hash: string) => {
-    return activeHash === hash ? `${styles.navLink} ${styles.active}` : styles.navLink
+    const isActive = activeHash === hash || activeHash.startsWith(`${hash}-`)
+    return isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
   }
 
   return (
@@ -139,27 +140,27 @@ export const Layout = ({ hero, children, footer }: LayoutProps) => {
                 <ul className={styles.subNav}>
                   <li>
                     <a
-                      href="#example-query-get"
-                      className={getNavLinkClass('example-query-get')}
+                      href="#examples-query-get"
+                      className={getNavLinkClass('examples-query-get')}
                     >
                       With TanStack Query (GET)
                     </a>
                   </li>
                   <li>
                     <a
-                      href="#example-query-mutation"
-                      className={getNavLinkClass('example-query-mutation')}
+                      href="#examples-query-mutation"
+                      className={getNavLinkClass('examples-query-mutation')}
                     >
                       With TanStack Query (Mutation)
                     </a>
                   </li>
                   <li>
-                    <a href="#example-auth" className={getNavLinkClass('example-auth')}>
+                    <a href="#examples-auth" className={getNavLinkClass('examples-auth')}>
                       Auth Token
                     </a>
                   </li>
                   <li>
-                    <a href="#example-refresh" className={getNavLinkClass('example-refresh')}>
+                    <a href="#examples-refresh" className={getNavLinkClass('examples-refresh')}>
                       Refresh on 401
                     </a>
                   </li>
