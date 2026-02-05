@@ -10,6 +10,15 @@
   "publishConfig": {
     "access": "public"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/liha-labs/apizel.git",
+    "directory": "packages/apizel"
+  },
+  "homepage": "https://apizel.liha.dev/",
+  "bugs": {
+    "url": "https://github.com/liha-labs/apizel/issues"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
