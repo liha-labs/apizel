@@ -8,7 +8,7 @@ export const useActiveHash = (itemIds: string[]) => {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            setActiveHash(`#${entry.target.id}`)
+            setActiveHash(entry.target.id)
           }
         })
       },

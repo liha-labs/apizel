@@ -139,6 +139,38 @@
 }
 
 @media (max-width: 768px) {
+  .bodyTableRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 2rem 0;
+  }
+
+  .bodyType {
+    width: 100%;
+  }
+
+  .typeContent {
+    font-size: 1.1rem;
+    white-space: normal;
+  }
+
+  .bodyArrow {
+    display: none;
+  }
+
+  .bodyResult {
+    white-space: normal;
+  }
+
+  .bodyResult strong {
+    font-size: 1rem;
+  }
+
+  .bodyResult span {
+    font-size: 0.95rem;
+  }
+
   .errorCard {
     grid-template-columns: 1fr;
   }

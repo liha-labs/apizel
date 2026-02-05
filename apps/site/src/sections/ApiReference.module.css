@@ -26,6 +26,7 @@
   font-family: var(--font-mono);
   font-size: 1rem;
   color: #000;
+  overflow-x: auto;
 }
 
 .methodList {
@@ -72,6 +73,9 @@
   font-size: 0.9rem;
   margin-bottom: 0.75rem;
   color: #000;
+  max-width: 100%;
+  overflow-x: auto;
+  vertical-align: middle;
 }
 
 
@@ -119,4 +123,26 @@
 
 .note li {
   margin-bottom: 0.25rem;
+}
+
+@media (max-width: 768px) {
+  .propRow {
+    grid-template-columns: 1fr;
+    padding: 2rem 0;
+    gap: 1rem;
+  }
+
+  .propName {
+    font-size: 1rem;
+  }
+
+  .signature,
+  .methodList {
+    padding: 1rem;
+    font-size: 0.9rem;
+  }
+
+  .propDetail p {
+    font-size: 1rem;
+  }
 }

@@ -10,7 +10,7 @@ export const Examples = () => {
       subTitle="apizel は “薄さ” がコンセプトです。ここでは TanStack Query や認証まわりの定番パターンを最小の形で示します。"
     >
       {/* 1. With TanStack Query (GET) */}
-      <div className={styles.exampleBlock}>
+      <div className={styles.exampleBlock} id="examples-query-get">
         <header className={styles.exampleHeader}>
           <div className={styles.titleArea}>
             <h3 className={styles.exampleTitle}>With TanStack Query (GET)</h3>
@@ -45,7 +45,7 @@ const useUsers = (role: string) => {
       </div>
 
       {/* 2. With TanStack Query (Mutation) */}
-      <div className={styles.exampleBlock}>
+      <div className={styles.exampleBlock} id="examples-query-mutation">
         <header className={styles.exampleHeader}>
           <div className={styles.titleArea}>
             <h3 className={styles.exampleTitle}>With TanStack Query (Mutation)</h3>
@@ -78,7 +78,7 @@ const upload = useMutation({
       </div>
 
       {/* 3. Auth Token */}
-      <div className={styles.exampleBlock}>
+      <div className={styles.exampleBlock} id="examples-auth">
         <header className={styles.exampleHeader}>
           <div className={styles.titleArea}>
             <h3 className={styles.exampleTitle}>Auth Token</h3>
@@ -105,7 +105,7 @@ const api = apizel({
       </div>
 
       {/* 4. Refresh on 401 */}
-      <div className={styles.exampleBlock}>
+      <div className={styles.exampleBlock} id="examples-refresh">
         <header className={styles.exampleHeader}>
           <div className={styles.titleArea}>
             <h3 className={styles.exampleTitle}>Refresh on 401</h3>
