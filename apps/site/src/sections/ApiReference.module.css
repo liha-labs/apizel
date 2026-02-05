@@ -74,9 +74,49 @@
   color: #000;
 }
 
+
 .propDetail p {
   font-size: 1.1rem;
   color: #4b5563;
   line-height: 1.7;
   margin: 0;
+}
+
+.propHeader {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-mute);
+  background: #f3f4f6;
+  padding: 0.75rem 1rem;
+  margin-top: -1px; /* collapse border */
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.note {
+  margin-top: 1.5rem;
+  padding: 1.5rem;
+  background: #eff6ff;
+  border-left: 4px solid #3b82f6;
+  border-radius: 4px;
+}
+
+.note strong {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #1e3a8a;
+  font-weight: 700;
+}
+
+.note ul {
+  margin: 0;
+  padding-left: 1.5rem;
+  color: #1e40af;
+}
+
+.note li {
+  margin-bottom: 0.25rem;
 }
