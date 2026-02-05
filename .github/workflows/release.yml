@@ -7,6 +7,7 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    environment: npm-publish
     permissions:
       contents: read
       id-token: write
@@ -33,27 +34,10 @@ jobs:
           test -f packages/apizel/dist/index.cjs
           test -f packages/apizel/dist/index.d.ts
 
-      - name: Check OIDC env (safe)
-        shell: bash
-        run: |
-          for k in ACTIONS_ID_TOKEN_REQUEST_URL ACTIONS_ID_TOKEN_REQUEST_TOKEN; do
-            if [ -n "${!k:-}" ]; then
-              echo "$k is set"
-            else
-              echo "$k is NOT set"
-            fi
-          done
-
       - name: Publish apizel (OIDC)
         working-directory: packages/apizel
         env:
           NODE_AUTH_TOKEN: ''
           NPM_TOKEN: ''
           NPM_CONFIG_USERCONFIG: /dev/null
-        run: |
-          VERSION="$(node -p "require('./package.json').version")"
-          if npm view @liha-labs/apizel@"$VERSION" version >/dev/null 2>&1; then
-            echo "Already published: @liha-labs/apizel@$VERSION"
-            exit 0
-          fi
-          npm publish --access public --provenance
+        run: npm publish --access public --provenance
