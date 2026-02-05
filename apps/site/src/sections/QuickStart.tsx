@@ -7,7 +7,7 @@ export const QuickStart = () => {
   const minimalCode = `
 import { apizel } from '@liha-labs/apizel'
 
-const api = apizel.create({
+const api = apizel({
   baseURL: 'https://api.example.com'
 })
 
