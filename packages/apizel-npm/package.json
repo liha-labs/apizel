@@ -1,0 +1,52 @@
+{
+  "name": "apizel",
+  "version": "0.1.1",
+  "description": "Alias package for @liha-labs/apizel",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist/*.js",
+    "dist/*.cjs",
+    "dist/*.d.ts",
+    "dist/*.d.cts",
+    "README.md",
+    "LICENSE",
+    "package.json"
+  ],
+  "dependencies": {
+    "@liha-labs/apizel": "^0.1.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/liha-labs/apizel.git",
+    "directory": "packages/apizel-npm"
+  },
+  "homepage": "https://apizel.liha.dev/",
+  "bugs": {
+    "url": "https://github.com/liha-labs/apizel/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "prepublishOnly": "pnpm build"
+  },
+  "devDependencies": {
+    "tsup": "^8.2.0",
+    "typescript": "^5.6.0"
+  }
+}
