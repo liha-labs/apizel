@@ -7,7 +7,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
-  id-token: write # OIDC (Trusted Publisher) 用
+  id-token: write
 
 jobs:
   release:
@@ -25,19 +25,23 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      # 変更があれば Release PR を作る（PR作成が許可されていない環境ならここは失敗する）
-      # PR作成が不要なら、このステップ自体を消してもOK
-      - name: Create Release PR (version + changelog)
-        uses: changesets/action@v1
-        with:
-          version: pnpm version-packages
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      # publish は Changesets ではなく npm publish で行う（Trusted Publisher / OIDC）
       - name: Build apizel
         run: pnpm -C packages/apizel build
 
+      # ★ここが重要：失効トークンを参照しないように掃除する
+      - name: Remove npm auth config (safe)
+        shell: bash
+        run: |
+          rm -f ~/.npmrc .npmrc
+          npm config delete //registry.npmjs.org/:_authToken || true
+          npm config delete _authToken || true
+          npm config delete always-auth || true
+
       - name: Publish apizel (OIDC)
         working-directory: packages/apizel
+        env:
+          # 念押し：トークン系は空、npmrcも見ない
+          NODE_AUTH_TOKEN: ''
+          NPM_TOKEN: ''
+          NPM_CONFIG_USERCONFIG: /dev/null
         run: npm publish --access public --provenance
