@@ -4,14 +4,13 @@ on:
   push:
     branches: [main]
 
-permissions:
-  contents: write
-  pull-requests: write
-  id-token: write
-
 jobs:
   release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
     steps:
       - uses: actions/checkout@v4
 
@@ -28,19 +27,20 @@ jobs:
       - name: Build apizel
         run: pnpm -C packages/apizel build
 
-      # ★ここが重要：失効トークンを参照しないように掃除する
-      - name: Remove npm auth config (safe)
+      - name: Check OIDC env (safe)
         shell: bash
         run: |
-          rm -f ~/.npmrc .npmrc
-          npm config delete //registry.npmjs.org/:_authToken || true
-          npm config delete _authToken || true
-          npm config delete always-auth || true
+          for k in ACTIONS_ID_TOKEN_REQUEST_URL ACTIONS_ID_TOKEN_REQUEST_TOKEN; do
+            if [ -n "${!k:-}" ]; then
+              echo "$k is set"
+            else
+              echo "$k is NOT set"
+            fi
+          done
 
       - name: Publish apizel (OIDC)
         working-directory: packages/apizel
         env:
-          # 念押し：トークン系は空、npmrcも見ない
           NODE_AUTH_TOKEN: ''
           NPM_TOKEN: ''
           NPM_CONFIG_USERCONFIG: /dev/null
