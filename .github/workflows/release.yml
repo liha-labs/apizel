@@ -25,6 +25,9 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      - name: Build apizel
+        run: pnpm -C packages/apizel build
+
       - name: Create Release PR or Publish
         uses: changesets/action@v1
         with:
