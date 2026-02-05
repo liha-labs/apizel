@@ -7,7 +7,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
-  id-token: write # ← OIDC必須
+  id-token: write # OIDC (Trusted Publisher) 用
 
 jobs:
   release:
@@ -25,17 +25,19 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      - name: Build apizel
-        run: pnpm -C packages/apizel build
-
-      - name: Create Release PR or Publish
+      # 変更があれば Release PR を作る（PR作成が許可されていない環境ならここは失敗する）
+      # PR作成が不要なら、このステップ自体を消してもOK
+      - name: Create Release PR (version + changelog)
         uses: changesets/action@v1
         with:
           version: pnpm version-packages
-          publish: pnpm release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # NPM_TOKEN は不要（Trusted Publisher を使う）
-          # ※ changesets/action の相性で必要なら空文字を入れるケースあり
-          NPM_TOKEN: ''
-          NODE_AUTH_TOKEN: ''
+
+      # publish は Changesets ではなく npm publish で行う（Trusted Publisher / OIDC）
+      - name: Build apizel
+        run: pnpm -C packages/apizel build
+
+      - name: Publish apizel (OIDC)
+        working-directory: packages/apizel
+        run: npm publish --access public --provenance
