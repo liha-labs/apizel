@@ -1,3 +1,7 @@
+---
+const { title = "Thin fetch wrapper for TypeScript | apizel" } = Astro.props;
+---
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -34,7 +38,7 @@
     />
     <meta property="twitter:image" content="https://apizel.liha.dev/og-image.jpg" />
 
-    <title>Thin fetch wrapper for TypeScript | apizel</title>
+    <title>{title}</title>
     <link rel="icon" href="/liha-lab-logo.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -44,7 +48,6 @@
     />
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <slot />
   </body>
 </html>
