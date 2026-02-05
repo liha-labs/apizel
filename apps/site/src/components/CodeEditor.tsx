@@ -1,71 +1,103 @@
-import { useState } from 'react'
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import { useCallback, useMemo } from 'react'
+import { PrismAsyncLight as SyntaxHighlighter } from 'react-syntax-highlighter'
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
+
+import bash from 'react-syntax-highlighter/dist/esm/languages/prism/bash'
+import js from 'react-syntax-highlighter/dist/esm/languages/prism/javascript'
+import tsx from 'react-syntax-highlighter/dist/esm/languages/prism/tsx'
+import ts from 'react-syntax-highlighter/dist/esm/languages/prism/typescript'
+
+import { copyCmd } from '../utils'
 import styles from './CodeEditor.module.css'
 
-interface Props {
+SyntaxHighlighter.registerLanguage('ts', ts)
+SyntaxHighlighter.registerLanguage('tsx', tsx)
+SyntaxHighlighter.registerLanguage('js', js)
+SyntaxHighlighter.registerLanguage('bash', bash)
+
+type Props = {
   code: string
-  language?: string
   filename?: string
+  lang?: 'ts' | 'tsx' | 'js' | 'bash'
+  withHeader?: boolean
 }
 
-export const CodeEditor = ({ code, language = 'typescript', filename = 'example.ts' }: Props) => {
-  const [copied, setCopied] = useState(false)
+export function CodeEditor({ code, filename, lang = 'ts', withHeader = true }: Props) {
+  const trimmedCode = useMemo(() => code.replace(/^\s*\n+|\n+\s*$/g, ''), [code])
 
-  const handleCopy = async () => {
-    await navigator.clipboard.writeText(code)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }
+  const copy = useCallback(async () => {
+    copyCmd(trimmedCode)
+  }, [trimmedCode])
 
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <div className={styles.dots}>
-          <span className={`${styles.dot} ${styles.red}`} />
-          <span className={`${styles.dot} ${styles.yellow}`} />
-          <span className={`${styles.dot} ${styles.green}`} />
-        </div>
-        <div className={styles.filename}>{filename}</div>
-        <button className={`${styles.copyBtn} ${copied ? styles.copied : ''}`} onClick={handleCopy}>
-          {copied ? (
-            'Copied!'
-          ) : (
+    <div className={styles.root}>
+      {withHeader && (
+        <div className={styles.header}>
+          <span className={styles.filename}>{filename ?? lang}</span>
+
+          <button type="button" className={styles.copyButton} onClick={copy} aria-label="Copy code">
             <svg
-              width="14"
-              height="14"
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              strokeWidth="2.5"
+              strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
+              className={styles.copyIcon}
             >
-              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+              <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
             </svg>
-          )}
-        </button>
-      </div>
-      <div className={styles.body}>
-        <SyntaxHighlighter
-          language={language}
-          style={oneDark}
-          customStyle={{
-            margin: 0,
-            padding: 0,
-            background: 'transparent',
-            fontSize: '0.95rem',
-            lineHeight: '1.6',
-            fontFamily: 'inherit',
-          }}
-          codeTagProps={{
-            style: { fontFamily: 'inherit' },
-          }}
+          </button>
+        </div>
+      )}
+
+      {!withHeader && (
+        <button
+          type="button"
+          className={`${styles.copyButton} ${styles.copyButtonFloating}`}
+          onClick={copy}
+          aria-label="Copy code"
         >
-          {code.trim()}
-        </SyntaxHighlighter>
-      </div>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className={styles.copyIcon}
+          >
+            <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+            <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+          </svg>
+        </button>
+      )}
+
+      <SyntaxHighlighter
+        language={lang}
+        style={vscDarkPlus}
+        PreTag="div"
+        wrapLongLines
+        customStyle={{
+          background: 'transparent',
+          paddingTop: 12.5,
+          paddingBottom: 12.5,
+          paddingLeft: 16,
+          paddingRight: withHeader ? 16 : 48,
+          margin: 0,
+        }}
+        codeTagProps={{ className: styles.code }}
+        className={styles.pre}
+      >
+        {code.trim()}
+      </SyntaxHighlighter>
     </div>
   )
 }
