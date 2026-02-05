@@ -57,9 +57,12 @@ try {
             標準として <code>pnpm</code> を推奨します。
           </p>
         </div>
-        <div className={styles.pnpmTerminal}>
-          <span className={styles.prompt}>$</span> {installCode}
-        </div>
+        <CodeEditor
+          code={`$ ${installCode}`}
+          lang="bash"
+          withHeader={false}
+          filename="install"
+        />
       </div>
 
       <div className={styles.step}>

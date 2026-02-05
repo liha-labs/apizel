@@ -1,10 +1,10 @@
 .section {
-  padding: 12rem 0;
+  padding: 8rem 0;
   border-bottom: 1px solid var(--border);
 }
 
 .header {
-  margin-bottom: 6rem;
+  margin-bottom: 4rem;
   /* 番号をはみ出させるための左余白。
      ここを広げることで、番号が外に出るスペースを確保しつつ
      タイトルの「面」を固定します。 */
