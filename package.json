@@ -15,7 +15,8 @@
     "build": "pnpm -r build",
     "ci": "pnpm lint && pnpm typecheck && pnpm test && pnpm build",
     "changeset": "changeset",
-    "version-packages": "changeset version",
+    "fix:packages": "node scripts/fix-packages.mjs",
+    "version-packages": "changeset version && pnpm fix:packages",
     "release": "changeset publish"
   },
   "devDependencies": {
