@@ -61,7 +61,8 @@ jobs:
           exit 1
 
       - name: Sync apizel (alias) to published version
-        run: node - <<'NODE'
+        run: |
+          node - <<'NODE'
           const fs = require('fs');
 
           const base = JSON.parse(fs.readFileSync('packages/apizel/package.json', 'utf8'));
@@ -74,7 +75,7 @@ jobs:
 
           fs.writeFileSync(aliasPath, JSON.stringify(alias, null, 2) + '\n');
           console.log('synced alias ->', base.version);
-        NODE
+          NODE
 
       # lockfile 更新は alias の workspace だけで十分（影響範囲を最小化）
       - name: Update lockfile after alias sync (CI only)
