@@ -1,5 +1,11 @@
 # @liha-labs/apizel
 
+## 0.3.0
+
+### Minor Changes
+
+- Allow creating clients with fully optional config, including no `baseURL`.
+
 ## 0.2.0
 
 ### Minor Changes

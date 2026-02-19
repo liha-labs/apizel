@@ -1,6 +1,6 @@
 {
   "name": "@liha-labs/apizel",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Lightweight fetch-based API client for Web + React Native.",
   "license": "MIT",
   "type": "module",
