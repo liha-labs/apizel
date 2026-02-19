@@ -1,5 +1,12 @@
 # @liha/playground
 
+## 0.0.3
+
+### Patch Changes
+
+- Updated dependencies [140298f]
+  - @liha-labs/apizel@0.2.0
+
 ## 0.0.2
 
 ### Patch Changes
