@@ -14,7 +14,7 @@ export const ApiReference = () => {
         <h3 className={styles.refTitle}>apizel(config)</h3>
         <p className={styles.refDesc}>ApiClient インスタンスを生成します。</p>
         <div className={styles.signature}>
-          <code>apizel(config: ApizelConfig): ApiClient</code>
+          <code>apizel(config?: ApizelConfig): ApiClient</code>
         </div>
       </div>
 
@@ -28,12 +28,10 @@ export const ApiReference = () => {
         </p>
         <div className={styles.propGrid}>
           <div className={styles.propRow}>
-            <div className={styles.propName}>
-              baseURL<span>required</span>
-            </div>
+            <div className={styles.propName}>baseURL</div>
             <div className={styles.propDetail}>
               <code>string</code>
-              <p>リクエストの起点となるURL。endpointと結合時にスラッシュは自動補正されます。</p>
+              <p>リクエストの起点となるURL。未指定時は endpoint をそのまま使います。</p>
             </div>
           </div>
           <div className={styles.propRow}>

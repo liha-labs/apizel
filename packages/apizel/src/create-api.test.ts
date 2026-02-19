@@ -88,3 +88,48 @@ describe('api.extend', () => {
     expect(calledUrls).toEqual(['https://billing.example.com/invoices', 'https://users.example.com/me'])
   })
 })
+
+describe('optional config', () => {
+  test('works with no arguments', async () => {
+    const originalFetch = globalThis.fetch
+    const globalFetchMock = vi.fn(async (input: RequestInfo | URL) => {
+      return Promise.resolve(jsonResponse({ url: String(input) }))
+    })
+    globalThis.fetch = globalFetchMock as typeof fetch
+
+    try {
+      const api = apizel()
+      await api.get('/health')
+      expect(globalFetchMock).toHaveBeenCalledTimes(1)
+      expect(String(globalFetchMock.mock.calls[0]?.[0])).toBe('/health')
+    } finally {
+      globalThis.fetch = originalFetch
+    }
+  })
+
+  test('works without passing config', async () => {
+    const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
+      return Promise.resolve(jsonResponse({ url: String(input) }))
+    })
+    const api = apizel({ fetchImpl: fetchMock })
+
+    await api.get('health')
+
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+    expect(String(fetchMock.mock.calls[0]?.[0])).toBe('/health')
+  })
+
+  test('extend works even if base config has no baseURL', async () => {
+    const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
+      return Promise.resolve(jsonResponse({ url: String(input) }))
+    })
+    const api = apizel({ fetchImpl: fetchMock })
+    const serviceApi = api.extend({ baseURL: 'https://svc.example.com' })
+
+    await api.get('/ping')
+    await serviceApi.get('/ping')
+
+    expect(String(fetchMock.mock.calls[0]?.[0])).toBe('/ping')
+    expect(String(fetchMock.mock.calls[1]?.[0])).toBe('https://svc.example.com/ping')
+  })
+})
