@@ -149,16 +149,17 @@ const applyBody = (init: RequestInit, headers: Record<string, string>, body: unk
  * ブランド入口（推奨）
  * - apizel(config) だけ覚えれば使える、という導線のためのエイリアス
  */
-export const apizel = (config: ApizelConfig): ApiClient => createApi(config)
+export const apizel = (config?: ApizelConfig): ApiClient => createApi(config)
 
-const mergeConfig = (base: ApizelConfig, overrides?: Partial<ApizelConfig>): ApizelConfig => {
+const mergeConfig = (base?: ApizelConfig, overrides?: Partial<ApizelConfig>): ApizelConfig => {
+  const prev = base ?? {}
   const next = overrides ?? {}
-  const hasHeaders = !!base.headers || !!next.headers
+  const hasHeaders = !!prev.headers || !!next.headers
 
   return {
-    ...base,
+    ...prev,
     ...next,
-    headers: hasHeaders ? mergeHeaders(base.headers, next.headers) : undefined,
+    headers: hasHeaders ? mergeHeaders(prev.headers, next.headers) : undefined,
   }
 }
 
@@ -166,7 +167,7 @@ const mergeConfig = (base: ApizelConfig, overrides?: Partial<ApizelConfig>): Api
  * 互換/汎用入口（中身は同じ）
  * - 将来 createApi という一般名で使いたいケース（社内規約/移行）向け
  */
-export const createApi = (config: ApizelConfig): ApiClient => {
+export const createApi = (config?: ApizelConfig): ApiClient => {
   const resolvedConfig = mergeConfig(config)
 
   /**
@@ -240,7 +241,7 @@ export const createApi = (config: ApizelConfig): ApiClient => {
     const meta: RequestMeta = { method, endpoint }
 
     // baseURL + endpoint + query params（配列は repeat、object は withParams 側で扱う）
-    const url = withParams(joinURL(resolvedConfig.baseURL, endpoint), options?.params)
+    const url = withParams(joinURL(resolvedConfig.baseURL ?? '', endpoint), options?.params)
 
     // headers は「base → token → request」で後勝ち（利用側が上書きできる）
     const baseHeaders = resolvedConfig.headers

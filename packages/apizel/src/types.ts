@@ -74,7 +74,7 @@ export type ResponseHookContext = {
  * apizel の設定（推奨）
  */
 export type ApizelConfig = {
-  baseURL: string
+  baseURL?: string
   headers?: Record<string, string>
   fetchImpl?: FetchLike
 

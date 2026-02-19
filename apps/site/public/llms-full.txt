@@ -108,7 +108,7 @@ const api = apizel({
 `ApiClient` インスタンスを生成します。
 
 ### ApizelConfig
-- `baseURL` (required): `string`
+- `baseURL`: `string` (optional)
 - `headers`: `Record<string, string>`
 - `getAccessToken`: `() => string | null | Promise<string | null>`
 - `refresh`: `() => Promise<string>`
