@@ -151,17 +151,30 @@ const applyBody = (init: RequestInit, headers: Record<string, string>, body: unk
  */
 export const apizel = (config: ApizelConfig): ApiClient => createApi(config)
 
+const mergeConfig = (base: ApizelConfig, overrides?: Partial<ApizelConfig>): ApizelConfig => {
+  const next = overrides ?? {}
+  const hasHeaders = !!base.headers || !!next.headers
+
+  return {
+    ...base,
+    ...next,
+    headers: hasHeaders ? mergeHeaders(base.headers, next.headers) : undefined,
+  }
+}
+
 /**
  * 互換/汎用入口（中身は同じ）
  * - 将来 createApi という一般名で使いたいケース（社内規約/移行）向け
  */
 export const createApi = (config: ApizelConfig): ApiClient => {
+  const resolvedConfig = mergeConfig(config)
+
   /**
    * fetch 実装は差し替え可能（Node/React Native/テストなど）
    * - 未指定なら globalThis.fetch を使う
    * - bind して `this` 依存を回避（環境差分の吸収）
    */
-  const fetchImpl = config.fetchImpl ?? globalThis.fetch.bind(globalThis)
+  const fetchImpl = resolvedConfig.fetchImpl ?? globalThis.fetch.bind(globalThis)
 
   // ---- 401 refresh single-flight（同時多発の401を1回のrefreshにまとめる） ----
   /**
@@ -183,7 +196,7 @@ export const createApi = (config: ApizelConfig): ApiClient => {
    * - refresh/login など除外したい場合は利用側で shouldAttachToken を上書きする
    */
   const shouldAttachToken =
-    config.shouldAttachToken ??
+    resolvedConfig.shouldAttachToken ??
     ((req: RequestMeta) => {
       return true
     })
@@ -194,14 +207,14 @@ export const createApi = (config: ApizelConfig): ApiClient => {
    * - 既に refresh が走っていれば、その Promise を返して合流する
    */
   const refreshOnce = async (): Promise<string> => {
-    if (!config.refresh) throw new Error('refresh() is not configured')
+    if (!resolvedConfig.refresh) throw new Error('refresh() is not configured')
     if (refreshPromise) return refreshPromise
 
     isRefreshing = true
     refreshPromise = (async () => {
       try {
         // refresh() は「新しいアクセストークン」を返す契約
-        return await config.refresh!()
+        return await resolvedConfig.refresh!()
       } finally {
         // 成功/失敗に関わらず single-flight を解除
         refreshPromise = null
@@ -227,10 +240,10 @@ export const createApi = (config: ApizelConfig): ApiClient => {
     const meta: RequestMeta = { method, endpoint }
 
     // baseURL + endpoint + query params（配列は repeat、object は withParams 側で扱う）
-    const url = withParams(joinURL(config.baseURL, endpoint), options?.params)
+    const url = withParams(joinURL(resolvedConfig.baseURL, endpoint), options?.params)
 
     // headers は「base → token → request」で後勝ち（利用側が上書きできる）
-    const baseHeaders = config.headers
+    const baseHeaders = resolvedConfig.headers
     const reqHeaders = options?.headers
 
     let tokenHeader: Record<string, string> | undefined
@@ -240,11 +253,11 @@ export const createApi = (config: ApizelConfig): ApiClient => {
      * - refresh が設定されていて、かつ refresh 実行中ではないときだけ true
      * - refresh 中に401が発生しても、さらに refresh を起動しない（無限ループ防止）
      */
-    const canTryRefresh = !!config.refresh && !isRefreshing
+    const canTryRefresh = !!resolvedConfig.refresh && !isRefreshing
 
     // Authorization ヘッダー付与（任意）
-    if (config.getAccessToken && shouldAttachToken(meta)) {
-      const token = await config.getAccessToken()
+    if (resolvedConfig.getAccessToken && shouldAttachToken(meta)) {
+      const token = await resolvedConfig.getAccessToken()
       if (token) tokenHeader = { Authorization: `Bearer ${token}` }
     }
 
@@ -261,8 +274,8 @@ export const createApi = (config: ApizelConfig): ApiClient => {
     }
 
     // 観測用 hooks（挙動は変えない）
-    const onRequest = config.onRequest
-    const onResponse = config.onResponse
+    const onRequest = resolvedConfig.onRequest
+    const onResponse = resolvedConfig.onResponse
 
     try {
       // ---- request hook ----
@@ -338,7 +351,7 @@ export const createApi = (config: ApizelConfig): ApiClient => {
           })
         } catch (e) {
           // refresh 失敗時の利用側 hook（ログアウト等）
-          await config.onRefreshFailed?.()
+          await resolvedConfig.onRefreshFailed?.()
           throw e
         }
       }
@@ -368,5 +381,6 @@ export const createApi = (config: ApizelConfig): ApiClient => {
     post: (endpoint, body, options) => request('POST', endpoint, body, options),
     put: (endpoint, body, options) => request('PUT', endpoint, body, options),
     patch: (endpoint, body, options) => request('PATCH', endpoint, body, options),
+    extend: (overrides) => createApi(mergeConfig(resolvedConfig, overrides)),
   }
 }
