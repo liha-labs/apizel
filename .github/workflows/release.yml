@@ -23,7 +23,7 @@ jobs:
           cache: pnpm
           registry-url: https://registry.npmjs.org
 
-      - run: pnpm install --no-frozen-lockfile
+      - run: pnpm install --no-frozen-lockfile --link-workspace-packages
 
       - name: Build @liha-labs/apizel
         run: pnpm -C packages/apizel build
