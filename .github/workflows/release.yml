@@ -71,7 +71,7 @@ jobs:
 
           alias.version = base.version;
           alias.dependencies ??= {};
-          alias.dependencies['@liha-labs/apizel'] = `^${base.version}`;
+          alias.dependencies['@liha-labs/apizel'] = 'workspace:^';
 
           fs.writeFileSync(aliasPath, JSON.stringify(alias, null, 2) + '\n');
           console.log('synced alias ->', base.version);

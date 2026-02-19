@@ -73,11 +73,13 @@ if (fs.existsSync(wrapperPkgPath)) {
     'package.json',
   ]
 
-  // 重要：npm に存在する時だけ version/deps を追従
+  // 依存解決は常に workspace を優先し、未公開版でも CI で詰まらないようにする
+  wrapperPkg.dependencies ??= {}
+  wrapperPkg.dependencies['@liha-labs/apizel'] = 'workspace:^'
+
+  // 重要：npm に存在する時だけ wrapper 自身の version を追従
   if (isPublished('@liha-labs/apizel', targetVersion)) {
     wrapperPkg.version = targetVersion
-    wrapperPkg.dependencies ??= {}
-    wrapperPkg.dependencies['@liha-labs/apizel'] = `^${targetVersion}`
     console.log(`synced wrapper -> ${targetVersion}`)
   } else {
     console.log(`skip wrapper sync: @liha-labs/apizel@${targetVersion} is not published yet`)

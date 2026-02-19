@@ -27,7 +27,7 @@ jobs:
           cache: pnpm
 
       # frozen でOK（repo側が正しければ）
-      - run: pnpm install --frozen-lockfile
+      - run: pnpm install --frozen-lockfile --link-workspace-packages
 
       # npmに存在する版だけ追従（fix-packages.mjs にガード済み想定）
       - name: Sync alias package.json (safe)
