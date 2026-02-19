@@ -70,6 +70,17 @@ const api = apizel({
 })
 ```
 
+### Extend client
+```ts
+const api = apizel(common)
+
+const usersApi = api.extend({ baseURL: USERS_URL })
+const billingApi = api.extend({ baseURL: BILLING_URL })
+
+await usersApi.get('/me')
+await billingApi.post('/invoices', body)
+```
+
 ### Body Handling
 - **JSON**: `Object` / `Array` -> `application/json` (JSON.stringify)
 - **FormData**: `FormData` -> `(Multipart boundary)` (Browser default)
@@ -109,6 +120,7 @@ const api = apizel({
 - `.post<T>(endpoint, body?, options?)`
 - `.put<T>(endpoint, body?, options?)`
 - `.patch<T>(endpoint, body?, options?)`
+- `.extend(overrides)`
 
 ### Errors
 - **HttpError**: `res.ok === false` の場合にスロー。`status`, `data`, `url` を保持。

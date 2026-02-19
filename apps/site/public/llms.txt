@@ -15,6 +15,7 @@
 - ✅ **Minimal axios-like body**: FormData passthrough, JSON Content-Type fallback.
 - ✅ **401 refresh retry**: Single-flight refresh logic, retry once.
 - ✅ **Observe hooks**: `onRequest` / `onResponse` for observation only.
+- ✅ **Extend client**: `api.extend(overrides)` で共通設定から派生クライアントを生成。
 
 ## Usage Summary
 
@@ -22,5 +23,6 @@
 import { apizel } from '@liha-labs/apizel'
 
 const api = apizel({ baseURL: 'https://api.example.com' })
+const usersApi = api.extend({ baseURL: 'https://users.example.com' })
 const data = await api.get<DTO>('/endpoint')
 ```
