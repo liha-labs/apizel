@@ -1,6 +1,6 @@
 {
   "name": "apizel",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Alias package for @liha-labs/apizel",
   "license": "MIT",
   "type": "module",
@@ -25,7 +25,7 @@
     "package.json"
   ],
   "dependencies": {
-    "@liha-labs/apizel": "^0.1.1"
+    "@liha-labs/apizel": "^0.2.0"
   },
   "repository": {
     "type": "git",
