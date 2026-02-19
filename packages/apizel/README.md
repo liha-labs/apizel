@@ -42,6 +42,22 @@ console.log(me)
 
 ---
 
+## Extend Client
+
+共通設定を保ちつつ、`baseURL` などだけを差し替えた派生クライアントを作れます。
+
+```ts
+const api = apizel(common)
+
+const usersApi = api.extend({ baseURL: USERS_URL })
+const billingApi = api.extend({ baseURL: BILLING_URL })
+
+await usersApi.get('/me')
+await billingApi.post('/invoices', body)
+```
+
+---
+
 ## Usage
 
 ### Request options

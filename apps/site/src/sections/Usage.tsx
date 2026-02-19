@@ -30,7 +30,26 @@ const api = apizel({
         />
       </div>
 
-      {/* 2. Request options */}
+      {/* 2. Extend client */}
+      <div className={styles.subSection}>
+        <h3 className={styles.subTitle}>Extend client</h3>
+        <p className={styles.desc}>
+          共通設定を維持しつつ、サービスごとに <code>baseURL</code> などを差し替えた派生クライアントを作成できます。
+        </p>
+        <CodeEditor
+          filename="extend.ts"
+          code={`
+const api = apizel(common)
+
+const usersApi = api.extend({ baseURL: USERS_URL })
+const billingApi = api.extend({ baseURL: BILLING_URL })
+
+await usersApi.get('/me')
+await billingApi.post('/invoices', body)`}
+        />
+      </div>
+
+      {/* 3. Request options */}
       <div className={styles.subSection}>
         <h3 className={styles.subTitle}>Request options</h3>
         <CodeEditor
@@ -45,7 +64,7 @@ await api.get('/users', {
         />
       </div>
 
-      {/* 3. Body Handling */}
+      {/* 4. Body Handling */}
       <div className={styles.subSection}>
         <h3 className={styles.subTitle}>Body Handling</h3>
         <p className={styles.desc}>
@@ -97,7 +116,7 @@ await api.get('/users', {
         </div>
       </div>
 
-      {/* 4. Query Params */}
+      {/* 5. Query Params */}
       <div className={styles.subSection}>
         <h3 className={styles.subTitle}>Query Params</h3>
         <CodeEditor
@@ -117,7 +136,7 @@ await api.get('/search', {
         />
       </div>
 
-      {/* 5. Auth & Refresh */}
+      {/* 6. Auth & Refresh */}
       <div className={styles.subSection}>
         <h3 className={styles.subTitle}>Auth & Refresh</h3>
         <p className={styles.desc}>
@@ -144,7 +163,7 @@ const api = apizel.create({
         />
       </div>
 
-      {/* 6. Hooks */}
+      {/* 7. Hooks */}
       <div className={styles.subSection}>
         <h3 className={styles.subTitle}>Hooks (Observe only)</h3>
         <p className={styles.desc}>リクエストの前後にログや計測を差し込めます。</p>
@@ -160,7 +179,7 @@ const api = apizel.create({
         />
       </div>
 
-      {/* 7. Errors */}
+      {/* 8. Errors */}
       <div className={styles.subSection}>
         <h3 className={styles.subTitle}>Errors</h3>
         <div className={styles.errorStack}>

@@ -125,4 +125,5 @@ export type ApiClient = {
   post: <DTO>(endpoint: string, body?: unknown, options?: RequestOptions) => Promise<DTO>
   put: <DTO>(endpoint: string, body?: unknown, options?: RequestOptions) => Promise<DTO>
   patch: <DTO>(endpoint: string, body?: unknown, options?: RequestOptions) => Promise<DTO>
+  extend: (overrides: Partial<ApizelConfig>) => ApiClient
 }

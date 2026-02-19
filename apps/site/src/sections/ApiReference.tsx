@@ -113,6 +113,7 @@ export const ApiReference = () => {
           <code>.post&lt;T&gt;(endpoint, body?, options?)</code>
           <code>.put&lt;T&gt;(endpoint, body?, options?)</code>
           <code>.patch&lt;T&gt;(endpoint, body?, options?)</code>
+          <code>.extend(overrides)</code>
         </div>
         <div className={styles.note}>
           <strong>Body Handling:</strong>
@@ -124,6 +125,10 @@ export const ApiReference = () => {
               その他は <code>JSON.stringify</code> され、Content-Type: application/json が自動付与
             </li>
           </ul>
+        </div>
+        <div className={styles.note}>
+          <strong>extend(overrides):</strong> 現在の実効設定をベースに新しいクライアントを返します。
+          元のクライアントや設定は変更されません。
         </div>
       </div>
 
